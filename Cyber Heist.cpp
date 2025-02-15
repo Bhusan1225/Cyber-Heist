@@ -284,5 +284,7 @@ int main()
 {
     PlayerHacker player;
     player.showInventory();
+
+    cout << " cyber heist,.\n";
     return 0;
 }
