@@ -32,6 +32,15 @@ enum class Inventory
               // Manipulates hacker's address
 };
 
+enum class TaskLevel
+{
+
+    Hight,
+    Medium,
+    Low
+
+};
+
 //baseclass HDD
 class HDD
 {
@@ -84,7 +93,68 @@ public:
         }
     }
 
+    void connectHDD()
+    {
+        int playerInput;
+
+        do {
+            cout << "press 11 to connect the HDD.\n";
+            cin >> playerInput;
+            if (playerInput == 11)
+            {
+                //logic
+            }
+            else
+            {
+                cout << " wrong input try again.\n";
+            }
+        } while (playerInput == 11);
+    }
+
 };
+
+
+
+class Client
+{
+    string ClientName;
+    TaskLevel taskLevel;
+    
+public:
+    Client(string name) :ClientName(name){}
+
+    void assignTaskCall()
+    {
+        char playerAnswer;
+        cout << " Hello, I have a task for you,do you want to take the task\n";
+        cout << " press Y for the accepting the offer N for declining it...\n";
+        cin >> playerAnswer;
+        if (playerAnswer == 'Y' || playerAnswer == 'y')
+        {
+            //logic
+            explainTask();
+        }
+        else
+        {
+            // logic
+            cout << " Thanks do not disclose the task, and do not disclose it...\n";
+            cout << " call cut.......\n";
+        }
+    }
+
+    void explainTask()
+    {
+        cout << "The task is.................\n ";
+        cout << "Also sending you the HDD. For ur help..\n";
+        cout << " call cut.......\n";
+    }
+
+
+
+
+};
+
+
 
 // Base class for all hackers
 class Hacker
@@ -101,9 +171,20 @@ protected:
     bool hasLaptop;
     bool hasVPN;
 
+
+    //object reference
+    Client* client;
+    clientHDD* clientHdd;
+
+
+
 public:
     Hacker(string hackerName, SkillLevel hackerSkill, vector<Inventory> inventoryList, TraceLevel hackerTraceLevel)
-        : name(hackerName), skillLevel(hackerSkill), inventories(inventoryList), traceLevel(hackerTraceLevel) {
+        : name(hackerName), skillLevel(hackerSkill), inventories(inventoryList), traceLevel(hackerTraceLevel) 
+    {
+        client = nullptr;
+        clientHdd = nullptr;
+
     }
 
     // Converts inventory enum to string
@@ -123,6 +204,8 @@ public:
 
     void Call()
     {
+        client = new Client("Hamster");
+        clientHdd = new clientHDD();
         cout << "You getting a call, Want to receive?? press c to receive the call...\n";
         cin >> playerInput;
         if (playerInput == 'c' || playerInput == 'C')
@@ -190,7 +273,7 @@ class PlayerHacker : public Hacker
 
 private:
     int playerInput;
-    HDD* hdd;
+  
 
 public:
     PlayerHacker() : Hacker("Jimmy", SkillLevel::Beginner, { Inventory::laptop, Inventory::VPN, Inventory::hardDrive }, TraceLevel::medium)
@@ -198,7 +281,7 @@ public:
         cout << "I am a hacker, and you can call me Jimmy\n";
         hasLaptop = true;
         hasVPN = true;
-        hdd = nullptr;
+        
     }
 
     void hack()
@@ -235,21 +318,7 @@ public:
 
     }
 
-    void connectHDD()
-    {
-        do {
-            cout << "press 11 to connect the HDD.\n";
-            cin >> playerInput;
-            if (playerInput == 11)
-            {
-                //logic
-            }
-            else
-            {
-                cout << " wrong input try again.\n";
-            }
-        } while (playerInput == 11);
-    }
+    
 
 };
 
