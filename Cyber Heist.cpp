@@ -52,35 +52,97 @@ protected:
     bool isConnected;
     int PlayerInput;
 
+    //inputs
+    int playerInput;
+    char playerAnswer;
+
 public:
     HDD(string name, int space, vector<int> passwords, vector<string> folders, bool checkconnection) : bankName(name), memorySpace(space), password(passwords), folder(folders), isConnected(checkconnection)
     {
         cout << " HDD is connecting..... wait\n";
     }
+public:
+    void connectHDD()
+    {
+  
+        do {
+            cout << "press 11 to connect the HDD.\n";
+            cin >> playerInput;
+            if (isConnected == true && playerInput == 11)
+            {
+                cout << "The client's HDD is connected to our d*vice n*w.\n";
+                cout << "1)Scan Drive              : press S\n";
+                scanHDD();
+
+            }
+            else
+            {
+                cout << "Not connected now, try again...\n";
+            }
+        } while (playerInput == 11);
+    }
 
     void scanHDD()
     {
-        cout << " Scanning the required files.\n";
+        cout << " Scanning......\n";
+        cout << " Done\n";
+        do {
+            cout << "press 22 to access files\n";
+            cin >> playerInput;
+            if (isConnected == true && playerInput == 11)
+            {
+             cout << "2)Acess Folder       : press F\n";
+               
+             acessfolders();
+
+            }
+            else
+            {
+                cout << "Not connected now, try again...\n";
+            }
+        } while (playerInput == 11);
 
     }
 
-    void scanedfolders()
+    
+    void acessfolders()
     {
-        if (isConnected == true)
-        {
-            cout << "Stored passwords:\n";
-            for (int i = 0; i < folder.size(); i++)
-            {
-                cout << folder[i] << endl;
-            }
+   
+      cout << "Stored passwords:\n";
+      for (int i = 0; i < folder.size(); i++)
+      {
+        cout << folder[i] << endl;
+      }
+ 
+      cout << "Enter the initial of the folder to access.\n";
+      cin >> playerAnswer;
+      do {
+          switch (playerAnswer)
+          {
+          case 'E':
+              cout << "You accessEmployee folder.\n";
+              break;
 
-        }
+          case 'B':
+              cout << "You access Employee folder.\n";
+              break;
 
+          case 'L':
+              cout << "You access Loan Applications folder.\n";
+              break;
+
+          case 'P':
+              cout << "You access Password folder.\n";
+              extractPasswards();
+              break;
+
+          }
+      } while (playerAnswer == 'P');
     }
 
     void extractPasswards()
     {
-        cout << " you can see all the passwards.\n";
+        cout << "You get all the passwards.\n";
         seeAllpasswards();
 
     }
@@ -91,41 +153,41 @@ public:
         for (int i = 0; i < password.size(); i++) {
             cout << password[i] << endl;
         }
+        cout << "Save the passward somewhere. It will help you later\n";
     }
 
-    void connectHDD()
-    {
-        int playerInput;
-
-        do {
-            cout << "press 11 to connect the HDD.\n";
-            cin >> playerInput;
-            if (playerInput == 11)
-            {
-                //logic
-            }
-            else
-            {
-                cout << " wrong input try again.\n";
-            }
-        } while (playerInput == 11);
-    }
+    
 
 };
 
 
+class clientHDD : HDD
+{
+public:
+
+    clientHDD() : HDD("CryptoHorizon", 200, { 1234, 5678, 91011, 1213, 1415 }, { " Employee", "Bank_Records", "Loan_Applications" ,"Passcodes" }, true)
+    {
+        cout << "<<HDD detals>>\n";
+        cout << "Bank n*me:" << bankName << endl;
+        cout << "HDD Memory:" << memorySpace << endl;
+       
+     }
+};
 
 class Client
 {
+private:
     string ClientName;
     TaskLevel taskLevel;
-    
+    char playerAnswer;
+   
+
 public:
     Client(string name) :ClientName(name){}
 
     void assignTaskCall()
     {
-        char playerAnswer;
+        
         cout << " Hello, I have a task for you,do you want to take the task\n";
         cout << " press Y for the accepting the offer N for declining it...\n";
         cin >> playerAnswer;
@@ -144,8 +206,10 @@ public:
 
     void explainTask()
     {
+        
         cout << "The task is.................\n ";
         cout << "Also sending you the HDD. For ur help..\n";
+        
         cout << " call cut.......\n";
     }
 
@@ -165,7 +229,7 @@ protected:
     TraceLevel traceLevel;
 
     vector<int> cryptos;
-    char playerInput;
+    char playerAnswer;
     
     vector<Inventory> inventories;
     bool hasLaptop;
@@ -174,7 +238,7 @@ protected:
 
     //object reference
     Client* client;
-    clientHDD* clientHdd;
+    HDD* clientHdd;
 
 
 
@@ -186,7 +250,11 @@ public:
         clientHdd = nullptr;
 
     }
-
+   
+    ~Hacker()
+    {
+        delete client;  // Free memory
+    }
     // Converts inventory enum to string
     string inventoryToString(Inventory item)
     {
@@ -202,17 +270,47 @@ public:
         }
     }
 
-    void Call()
+    void receiveCall()
     {
         client = new Client("Hamster");
-        clientHdd = new clientHDD();
-        cout << "You getting a call, Want to receive?? press c to receive the call...\n";
-        cin >> playerInput;
-        if (playerInput == 'c' || playerInput == 'C')
-        {
+        
+        cout << "You getting a call, Want to receive?? press R to receive the call...\n";
+        cin >> playerAnswer;
+        
+        do {
+            if (playerAnswer == 'r' || playerAnswer == 'R')
+            {
+                client->assignTaskCall();
+            }
+            else
+            {
+                cout << "Not able to receive the call.\n";
+            }
+        } while (playerAnswer == 'r' || playerAnswer == 'R');
 
-        }
+
+        cout << " press R to receive the hardDrive.\n";
+        cin >> playerAnswer;
+        do {
+            if (playerAnswer == 'i' || playerAnswer == 'I')
+            {
+                receiveHDD();
+            }
+            else
+            {
+                cout << "Not able to receive the HDD.\n";
+            }
+        } while (playerAnswer == 'i' || playerAnswer == 'I');
+        
     }
+
+    void receiveHDD() 
+    {
+        clientHdd = new HDD("CryptoHorizon", 200, { 1234, 5678, 91011, 1213, 1415 }, { "Employee", "Bank_Records", "Loan_Applications", "Passcodes" }, true);
+        clientHdd->connectHDD();
+
+    }
+    
 
     // Display inventory
     void showInventory() 
@@ -220,8 +318,8 @@ public:
         do 
         {
             cout << "press I for showing all the inventory options \n";
-            cin >> playerInput;
-            if (playerInput == 'I' || playerInput == 'i')
+            cin >> playerAnswer;
+            if (playerAnswer == 'I' || playerAnswer == 'i')
             {
                 cout << "Hacker name:" << name << " Inventory:\n";
                 for (const auto& item : inventories)
@@ -234,7 +332,7 @@ public:
                 cout << "No Inventory found\n";
             }
 
-        } while (playerInput == 'I' || playerInput == ' i');
+        } while (playerAnswer == 'I' || playerAnswer == ' i');
         
     }
 
@@ -323,26 +421,6 @@ public:
 };
 
 
-class clientHDD : HDD
-{
-public:
-
-    clientHDD() : HDD("CryptoHorizon", 200, { 1234, 5678, 91011, 1213, 1415 }, { " Employee", "Bank_Records", "Loan_Applications" ,"Passcodes" }, true) 
-    {
-
-        cout << "Bank n*me:" << bankName << endl;
-        cout << "HDD Memory:" << memorySpace << endl;
-        if (isConnected == true)
-        {
-            cout << "The client's HDD is connected to your d*vice n*w.\n";
-        }
-        else 
-        {
-            cout << "Not connected now, try again...\n";
-        }
-
-    }
-};
 
 
 
@@ -352,8 +430,10 @@ public:
 int main()
 {
     PlayerHacker player;
+    player.receiveCall();
+
     player.showInventory();
 
-    cout << " cyber heist,.\n";
+    cout << " Thank you for playing cyber heist................................................\n";
     return 0;
 }
